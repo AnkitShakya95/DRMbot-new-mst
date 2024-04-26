@@ -56,12 +56,12 @@ async def drm(bot: ace, m: Message):
                 os.remove(f'{path}/{data}')
 
 
-        cmd4 = f'ffmpeg -i "{path}/video.mp4" -i "{path}/audio.m4a" -c copy "{path}/{name}.mp4"'
+        cmd4 = f'ffmpeg -i "{path}/video.mp4" -i "{path}/audio.m4a" -c copy "{path}/{name}.mkv"'
         os.system(cmd4)
         os.remove(f"{path}/video.mp4")
         os.remove(f"{path}/audio.m4a")
-        filename = f"{path}/{name}.mp4"
-        cc = f"{name}.mp4\n\n**Description:-**\n{CP}"
+        filename = f"{path}/{name}.mkv"
+        cc = f"{name}.mkv\n\n**Description:-**\n{CP}"
         # await DownUP.sendVideo(bot, m, filename, cc, Thumb, name, prog, path)
         UL = Upload_to_Tg(bot=bot, m=m, file_path=filename, name=name,
                             Thumb=Thumb, path=path, show_msg=prog, caption=cc)
