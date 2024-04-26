@@ -189,12 +189,10 @@ class TgClient(TgHandler):
     async def thumb(self):
         t = await self.bot.ask(
             self.m.chat.id,
-            "**Send Thumb JPEG/PNG or Telegraph LinK  or No :-**"
+            "**Send Thumb JPEG/PNG or Telegraph LinK :-**"
         )
         if t.text:
             thumb = t.text
         elif t.photo:
             thumb = await TgClient.downloadMedia(self, t)
-        else:
-            thumb == "no"
         return thumb
