@@ -13,7 +13,7 @@ from handlers.tg import TgHandler
 cc = 0
 
 EXTRA_LINKS = {
-    "CP_VIMEO_TYPE": ("https://videos.classplusapp.com/", "https://api.edukemy.com/videodetails/", "https://tencdn.classplusapp.com", "https://covod.testbook.com/"),
+    "CP_VIMEO_TYPE": ("https://videos.classplusapp.com/", "https://api.edukemy.com/videodetails/"),
     "GUIDELY_LINK": ("https://guidely.prepdesk.in/api/", "https://ibpsguide.prepdesk.in/api/"),
     # "http://104.199.144.5:1935/vod/",
     "SET3": ("https://ply-404.herokuapp.com/"),
@@ -54,7 +54,7 @@ class get_link_atributes:
                 wXh = get_link_atributes().get_wxh(YTDLP)
                 return wXh
         else:
-            YTDLP = f'yt-dlp -i --no-check-certificate -f "{YTF}" --no-warning "{url}" --progress --remux-video mp4 -o "%(resolution)s"'
+            YTDLP = f'yt-dlp -i --no-check-certificate -f "{YTF}" --no-warning "{url}" --progress --remux-video mkv -o "%(resolution)s"'
             wXh = get_link_atributes().get_wxh(YTDLP)
             return wXh
 
@@ -69,12 +69,6 @@ class get_link_atributes:
                 return url
         elif link.startswith(("https://vod.visionias.in/player/index.php", "https://vod.visionias.in/player_v2/index.php")):
             url = ParseLink.vision_m3u8_link(link, Q)
-            return url
-        elif link.startswith(("https://covod.testbook.com/")):
-            url = ParseLink.classplus_link(link=link)
-            return url
-        elif link.startswith(("https://tencdn.classplusapp.com")):
-            url = ParseLink.classplus_link(link=link)
             return url
         elif link.startswith("http://www.visionias.in/student/videoplayer_v2/?"):
             url = ParseLink.vision_mpd_link(link)
@@ -112,16 +106,16 @@ class Download_Methods:
         self.token = Token
         self.temp_dir = f"{path}/{name}"
 
-    async def m3u82mp4(self, file):
+    async def m3u82mkv(self, file):
         subprocess.run(
             [
                 "ffmpeg", "-hide_banner", "-loglevel", "error", "-protocol_whitelist", "file,http,https,tcp,tls,crypto",
-                "-i", file, "-c", "copy", "-bsf:a", "aac_adtstoasc", f"{self.temp_dir}.mp4"
+                "-i", file, "-c", "copy", "-bsf:a", "aac_adtstoasc", f"{self.temp_dir}.mkv"
             ]
         )
         os.remove(file)
-        if os.path.isfile(f"{self.temp_dir}.mp4"):
-            return f"{self.temp_dir}.mp4"
+        if os.path.isfile(f"{self.temp_dir}.mkv"):
+            return f"{self.temp_dir}.mkv"
 
     def addapdf(self):
         cookies = {
@@ -205,12 +199,12 @@ class Download_Methods:
                 cmd3 = f'mp4decrypt --key 1:{z} {self.path}/{d} "{self.path}/audio.m4a"'
                 os.system(cmd3)
                 os.remove(f"{self.path}/{d}")
-        cmd4 = f'ffmpeg -i "{self.path}/video.mp4" -i "{self.path}/audio.m4a" -c copy "{self.temp_dir}.mp4"'
+        cmd4 = f'ffmpeg -i "{self.path}/video.mp4" -i "{self.path}/audio.m4a" -c copy "{self.temp_dir}.mkv"'
         os.system(cmd4)
         os.remove(f"{self.path}/video.mp4")
         os.remove(f"{self.path}/audio.m4a")
-        if os.path.isfile(f"{self.temp_dir}.mp4"):
-            file_name = f"{self.temp_dir}.mp4"
+        if os.path.isfile(f"{self.temp_dir}.mkv"):
+            file_name = f"{self.temp_dir}.mkv"
             return file_name
 
     def get_drive_link_type(self):
@@ -238,7 +232,7 @@ class download_handler(Download_Methods):
             dl = subprocess.run(cmd, shell=True)
         except Exception as e_:
             LOGS.info(str(e_))
-        file_path = f"{self.temp_dir}.mp4"
+        file_path = f"{self.temp_dir}.mkv"
         return file_path
 
     def recursive(self, cmd):
@@ -251,7 +245,7 @@ class download_handler(Download_Methods):
             cc += 1
             download_handler.recursive(self, cmd=cmd)
         cc = 0
-        file_path = f"{self.temp_dir}.mp4"
+        file_path = f"{self.temp_dir}.mkv"
         LOGS.info(str(file_path))
         return file_path
 
@@ -279,14 +273,14 @@ class download_handler(Download_Methods):
             print(
                 "Failed:", cmd, "(pid = " + str(process.pid) + ")", flush=True
             )
-        file_path = f"{self.temp_dir}.mp4"
+        file_path = f"{self.temp_dir}.mkv"
         LOGS.info(str(file_path))
         return file_path
 
     async def start_download(self):
         YTF = f"bv[height<=?{self.Q}]+ba/[height<=?{self.Q}]+ba/[height>=?{self.Q}]+ba/[height<=?{self.Q}]/[height>=?{self.Q}]/b"
-        YTDLP = f'yt-dlp -i --no-check-certificate -f "{YTF}" --no-warning "{self.url}" --merge-output-format mp4 --remux-video mp4 -o "{self.temp_dir}.%(ext)s"'
-        CMD = f"{YTDLP} -R 25 --fragment-retries 25 --external-downloader aria2c --downloader-args 'aria2c: -x 16 -j 32'"
+        YTDLP = f'yt-dlp -i --no-check-certificate -f "{YTF}" --no-warning "{self.url}" --merge-output-format mkv --remux-video mkv -o "{self.temp_dir}.%(ext)s"'
+        CMD = f'{YTDLP} --external-downloader aria2c --downloader-args "aria2c: -x 16 -j 32 -s 16 -k 1M"'
         # dl = subprocess.run(download_cmd, shell=True)
 
         if self.url.startswith('https://elearn.crwilladmin.com/') and self.url.endswith('.pdf'):
@@ -310,7 +304,7 @@ class download_handler(Download_Methods):
 
         if self.url.startswith("https://videos.sproutvideo.com/"):
             file = ParseLink.olive(self.Q, self.url, self.path)
-            file_name = await download_handler.m3u82mp4(self, file)
+            file_name = await download_handler.m3u82mkv(self, file)
             return file_name
         if "drive" in self.url:
             c_type = download_handler.get_drive_link_type(self)
@@ -330,8 +324,8 @@ class download_handler(Download_Methods):
                 rout = ParseLink.rout(url=self.url, m3u8=m3u8url)
                 os.system(f'curl "{rout}" -c "cooks.txt"')
                 cook = "cooks.txt"
-                YTDLP = f'yt-dlp -i --no-check-certificate -f "{YTF}" --no-warning "{m3u8url}" --cookies "{cook}" --remux-video mp4 -o "{self.temp_dir}.%(ext)s"'
-                CMD = f"{YTDLP} -R 25 --fragment-retries 25 --external-downloader aria2c --downloader-args 'aria2c: -x 16 -j 32'"
+                YTDLP = f'yt-dlp -i --no-check-certificate -f "{YTF}" --no-warning "{m3u8url}" --cookies "{cook}" --remux-video mkv -o "{self.temp_dir}.%(ext)s"'
+                CMD = f'{YTDLP} --external-downloader aria2c --downloader-args "aria2c: -x 16 -j 32 -s 16 -k 1M"'
                 file_name = await download_handler.recursive_asyno(self, cmd=CMD)
                 os.remove(cook)
                 return file_name
