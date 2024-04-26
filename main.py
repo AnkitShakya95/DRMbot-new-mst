@@ -12,21 +12,21 @@ from tglogging import TelegramLogHandler
 
 # Config 
 class Config(object):
-    BOT_TOKEN = os.environ.get("BOT_TOKEN", "6522994878:AAHO8SO1mZorGytWTXGqIXFxv2GcnX9tPGQ")
-    API_ID = int(os.environ.get("API_ID",  26945844))
-    API_HASH = os.environ.get("API_HASH", "9f2f1d81fd2af2b21a700fa6681215b1")
+    BOT_TOKEN = os.environ.get("BOT_TOKEN", "6169960750:AAHq66fyOZg1Qr6JU-j3HUv1ZeSi1tML9LM")
+    API_ID = int(os.environ.get("API_ID", 11593019))
+    API_HASH = os.environ.get("API_HASH", "3be430b8694b20e8e665506c0595a32e")
     DOWNLOAD_LOCATION = "./DOWNLOADS"
     SESSIONS = "./SESSIONS"
 
-    AUTH_USERS = os.environ.get('AUTH_USERS', '6811217534').split(',')
+    AUTH_USERS = os.environ.get('AUTH_USERS', '5291627920,5585178935,737209635').split(',')
     for i in range(len(AUTH_USERS)):
         AUTH_USERS[i] = int(AUTH_USERS[i])
 
-    GROUPS = os.environ.get('GROUPS', '-1002111115192').split(',')
+    GROUPS = os.environ.get('GROUPS', '-1001893571078').split(',')
     for i in range(len(GROUPS)):
         GROUPS[i] = int(GROUPS[i])
 
-    LOG_CH = -1002072973539
+    LOG_CH = -1001553411101
 
 # TelegramLogHandler is a custom handler which is inherited from an existing handler. ie, StreamHandler.
 logging.basicConfig(
@@ -50,14 +50,14 @@ LOGGER.info("live log streaming to telegram.")
 
 # Store
 class Store(object):
-    CPTOKEN = "eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9.eyJpZCI6MzgzNjkyMTIsIm9yZ0lkIjoyNjA1LCJ0eXBlIjoxLCJtb2JpbGUiOiI5MTcwODI3NzQyODkiLCJuYW1lIjoiQWNlIiwiZW1haWwiOm51bGwsImlzRmlyc3RMb2dpbiI6dHJ1ZSwiZGVmYXVsdExhbmd1YWdlIjpudWxsLCJjb3VudHJ5Q29kZSI6IklOIiwiaXNJbnRlcm5hdGlvbmFsIjowLCJpYXQiOjE2NDMyODE4NzcsImV4cCI6MTY0Mzg4NjY3N30.hM33P2ai6ivdzxPPfm01LAd4JWv-vnrSxGXqvCirCSpUfhhofpeqyeHPxtstXwe0"
+    CPTOKEN = "eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9.eyJpZCI6MzY3NjIxOTMsIm9yZ0lkIjoyODU4NzgsInR5cGUiOjEsIm1vYmlsZSI6IjkxODQ2OTYwMzQ1MiIsIm5hbWUiOiJTaGl2YW0gRHViZXkiLCJlbWFpbCI6bnVsbCwiaXNJbnRlcm5hdGlvbmFsIjowLCJkZWZhdWx0TGFuZ3VhZ2UiOiJlbiIsImNvdW50cnlDb2RlIjoiSU4iLCJjb3VudHJ5SVNPIjoiOTEiLCJ0aW1lem9uZSI6IkdNVCs1OjMwIiwiaXNEaXkiOmZhbHNlLCJpYXQiOjE2NTc4MTU1NjQsImV4cCI6MTY1ODQyMDM2NH0.BdSaVw3gsgf3UGcIv5OdwrD_WgzD8IYN9lIvJzfAmaYMlowlRhr7q_6IiUUhWNCw"
     SPROUT_URL = "https://discuss.oliveboard.in/"
     ADDA_TOKEN = ""
-    THUMB_URL = "https://telegra.ph/file/fd7a1e0e94a1f3e7d8b3a.jpg"
+    THUMB_URL = "https://telegra.ph/file/1f9bb59089588344bfb1f.jpg"
 
 # Format
 class Msg(object):
-    START_MSG = "**/pro**"
+    START_MSG = "**Running !!**"
 
     TXT_MSG = "Hey <b>{user},"\
         "\n\n`I'm Multi-Talented Robot. I Can Download Many Type of Links.`"\
@@ -71,7 +71,7 @@ class Msg(object):
 
     CMD_MSG_1 = "`{txt}`\n\n**Total Links in File are :-** {no_of_links}\n\n**Send any Index From `[ 1 - {no_of_links} ]` :-**"
     CMD_MSG_2 = "<b>Uploading :- </b> `{file_name}`"
-    RESTART_MSG = "✅ HI Bhai log\n✅ PATH CLEARED"
+    RESTART_MSG = "✅ HI BAAZIGAR RANDI\n✅ PATH CLEARED"
 
 # Prefixes
 prefixes = ["/", "~", "?", "!", "."]
@@ -103,14 +103,14 @@ if __name__ == "__main__":
     
     async def main():
         await PRO.start()
-        # h = await PRO.get_chat_member(chat_id= int(-1001993763284), user_id=1183124209)
+        # h = await PRO.get_chat_member(chat_id= int(-1001643243044), user_id=5404384332)
         # print(h)
         bot_info = await PRO.get_me()
         LOGGER.info(f"<--- @{bot_info.username} Started --->")
         
         for i in chat_id:
             try:
-                await PRO.send_message(chat_id=i, text="**Bot Started! ♾ /pro **")
+                await PRO.send_message(chat_id=i, text="**Bot Started! ♾**")
             except Exception as d:
                 print(d)
                 continue
