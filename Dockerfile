@@ -16,6 +16,6 @@ WORKDIR /app/
 
 RUN pip3 install --no-cache-dir --upgrade --requirement requirements.txt
 
-CMD ["sh" "start.sh"]
+CMD python3 main.py
 
 #!git clone https://github.com/axiomatic-systems/Bento4.git && cd Bento4 && apt-get -y install cmake && mkdir cmakebuild && cd cmakebuild/ && cmake -DCMAKE_BUILD_TYPE=Release .. && make && make install
