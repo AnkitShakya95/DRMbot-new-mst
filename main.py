@@ -33,7 +33,7 @@ routes = web.RouteTableDef()
 
 @routes.get("/", allow_head=True)
 async def root_route_handler(request):
-    return web.json_response("https://DRMbot-new-mst-for-render.onrender.com/")
+    return web.json_response("https://drmbot-new-mst.onrender.com/")
 
 async def web_server():
     web_app = web.Application(client_max_size=30000000)
