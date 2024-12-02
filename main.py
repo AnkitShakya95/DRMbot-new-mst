@@ -28,6 +28,18 @@ class Config(object):
 
     LOG_CH = -1002409089356
 
+# Define aiohttp routes
+routes = web.RouteTableDef()
+
+@routes.get("/", allow_head=True)
+async def root_route_handler(request):
+    return web.json_response("https://DRMbot-new-mst-for-render.onrender.com/")
+
+async def web_server():
+    web_app = web.Application(client_max_size=30000000)
+    web_app.add_routes(routes)
+    return web_app
+
 # TelegramLogHandler is a custom handler which is inherited from an existing handler. ie, StreamHandler.
 logging.basicConfig(
     level=logging.INFO,
